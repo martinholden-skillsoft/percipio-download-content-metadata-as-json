@@ -79,3 +79,5 @@ typings/
 .deployment
 .vscode/launch.json
 .vscode/settings.json
+
+lastrun.json
