@@ -387,9 +387,9 @@ const main = (configOptions) => {
       if (response.total > 0) {
         getAllPages(options, response.total, axiosInstance)
           .then((data) => {
-            if (accessSafe(() => data.rejectedRequests.length, 0) > 0) {
+            if (accessSafe(() => data.failedRequests.length, 0) > 0) {
               logger.error(
-                `Failed to completed download. ${data.rejectedRequests.length} requests failed.`,
+                `Failed to completed download. ${data.failedRequests.length} requests failed.`,
                 loggingOptions
               );
             } else {
