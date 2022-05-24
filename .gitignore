@@ -80,4 +80,6 @@ typings/
 .vscode/launch.json
 .vscode/settings.json
 
+#App files
 lastrun.json
+results/
