@@ -123,6 +123,10 @@ const getRecordCount = (options, axiosInstance = Axios) => {
 
     const opts = _.cloneDeep(options);
     opts.request.query.max = 1;
+    opts.request.correlationid = uuidv4();
+
+    loggingOptions.correlationid = opts.request.correlationid;
+    logger.info('Requesting single record to determine count of available.', loggingOptions);
 
     const results = {
       total: null,
@@ -133,6 +137,8 @@ const getRecordCount = (options, axiosInstance = Axios) => {
       .then((response) => {
         results.total = parseInt(response.headers['x-total-count'], 10);
         results.pagingRequestId = response.headers['x-paging-request-id'] || null;
+
+        loggingOptions.correlationid = accessSafe(() => response.config.correlationid, null);
 
         const message = [];
         message.push(`Total Records ['x-total-count']: ${results.total.toLocaleString()}`);
@@ -169,8 +175,9 @@ const getPage = (options, offset, processChain = new Combiner([]), axiosInstance
     opts.request.query.offset = offset;
     opts.request.correlationid = uuidv4();
 
+    loggingOptions.correlationid = opts.request.correlationid;
+
     const message = [];
-    message.push(`CorrelationId: ${opts.request.correlationid}.`);
     message.push(
       `Records Requested: ${opts.request.query.offset.toLocaleString()} to ${(
         opts.request.query.offset + opts.request.query.max
@@ -191,8 +198,9 @@ const getPage = (options, offset, processChain = new Combiner([]), axiosInstance
           correlationid: accessSafe(() => response.config.correlationid, null),
         };
 
+        loggingOptions.correlationid = result.correlationid;
+
         const responsemessage = [];
-        responsemessage.push(`CorrelationId: ${result.correlationid}.`);
         responsemessage.push(
           `Records Requested: ${result.start.toLocaleString()} to ${result.end.toLocaleString()}.`
         );
