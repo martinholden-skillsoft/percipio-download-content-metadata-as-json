@@ -326,6 +326,7 @@ const main = (configOptions) => {
   };
 
   const options = configOptions ? { ...configOptions } : null;
+  options.logger = logger;
 
   if (_.isNull(options)) {
     logger.error('Invalid configuration', loggingOptions);
