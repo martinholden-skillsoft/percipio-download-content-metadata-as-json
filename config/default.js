@@ -115,6 +115,13 @@ config.rax.noResponseRetries = 4;
 // You can set the backoff type.
 // options are 'exponential' (default), 'static' or 'linear'
 config.rax.backoffType = 'exponential';
+// The response status codes to retry.  Supports a double
+// array with a list of ranges.  Defaults is:
+// [[100, 199], [429, 429], [500, 599]]
+config.rax.statusCodesToRetry = [
+  [100, 199],
+  [429, 429],
+];
 
 // Bottleneck Limiter
 // see https://github.com/SGrondin/bottleneck#job-options
